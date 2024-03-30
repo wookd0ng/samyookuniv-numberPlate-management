@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>번호판 조회</title>
+    <link rel="stylesheet" type="text/css" href="/styles.css">
+    <style>
+        /* CSS로 id 열을 시각적으로 숨깁니다 */
+        .hidden-column {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<h1>삼육대 동문 근로</h1>
+<!-- 조회폼 -->
+<form th:action="@{/search}" method="get" class="search_add">
+    <input type="text" name="keyword" placeholder="검색할 번호나 이름을 입력하세요">
+    <button type="submit">조회</button>
+</form>
+
+<!-- 추가 폼 -->
+<form th:action="@{/add}" method="post" class="search_add">
+    <input type="text" name="number" placeholder="추가할 번호를 입력하세요">
+    <input type="text" name="name" placeholder="추가할 이름을 입력하세요">
+    <button type="submit">추가</button>
+</form>
+
+<!-- 사용자 데이터를 테이블 형식으로 출력 -->
+<table border="1">
+    <thead>
+    <tr>
+        <!-- ID 열 추가 -->
+        <th class="hidden-column">ID</th>
+        <th>번호</th>
+        <th>이름</th>
+        <th>수정사항</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- 사용자 데이터를 반복하여 출력 -->
+    <tr th:each="user : ${userData}">
+        <!-- ID 열 출력 -->
+        <td class="hidden-column" th:text="${user.id}"></td>
+        <td th:text="${user.number}"></td>
+        <td th:text="${user.name}"></td>
+        <td>
+            <form th:action="@{/edit}" method="post" class="add_delete">
+                <!-- ID를 hidden 필드로 전달 -->
+                <input type="hidden" name="id" th:value="${user.id}">
+                <input type="text" name="number" placeholder="추가할 번호를 입력하세요" th:value="${user.number}">
+                <input type="text" name="name" placeholder="추가할 이름을 입력하세요" th:value="${user.name}">
+                <button type="submit">수정</button>
+            </form>
+            <form th:action="@{/delete}" method="post" class="add_delete">
+                <!-- ID를 hidden 필드로 전달 -->
+                <input type="hidden" name="id" th:value="${user.id}">
+                <button type="submit">삭제</button> <!-- 삭제 버튼 추가 -->
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>차량 번호 관리</title>
+    <script>
+        // 차량 번호를 저장할 배열
+        var carNumbers = [];
+
+        // 차량 번호를 추가하는 함수
+        function addCarNumber() {
+            var inputElement = document.getElementById("carNumberInput");
+            var carNumber = inputElement.value.trim();
+
+            // 입력된 값이 비어있는지 확인
+            if (carNumber === "") {
+                alert("번호를 입력하세요.");
+                return;
+            }
+
+            // 중복된 차량 번호인지 확인
+            if (carNumbers.includes(carNumber)) {
+                alert("이미 추가된 번호입니다.");
+                return;
+            }
+
+            // 차량 번호를 배열에 추가하고 목록을 갱신
+            carNumbers.push(carNumber);
+            updateCarNumberList();
+            inputElement.value = ""; // 입력 상자 초기화
+        }
+
+        // 차량 번호를 삭제하는 함수
+        function removeCarNumber(index) {
+            carNumbers.splice(index, 1); // 배열에서 해당 인덱스의 요소를 삭제
+            updateCarNumberList(); // 목록을 갱신
+        }
+
+        // 차량 번호 목록을 갱신하는 함수
+        function updateCarNumberList() {
+            var listElement = document.getElementById("carNumberList");
+            listElement.innerHTML = ""; // 목록 초기화
+
+            // 각 차량 번호에 대한 목록 아이템 생성
+            carNumbers.forEach(function(carNumber, index) {
+                var listItem = document.createElement("li");
+                listItem.textContent = carNumber;
+
+                // 삭제 버튼 추가
+                var deleteButton = document.createElement("button");
+                deleteButton.textContent = "삭제";
+                deleteButton.onclick = function() {
+                    removeCarNumber(index);
+                };
+
+                listItem.appendChild(deleteButton);
+                listElement.appendChild(listItem);
+            });
+        }
+    </script>
+</head>
+<body>
+<h1>조회</h1>
+<input type="text" id="carNumberInput" placeholder="차량 번호를 입력하세요">
+<button onclick="addCarNumber()">추가</button>
+<ul id="carNumberList"></ul>
+</body>
+</html>
